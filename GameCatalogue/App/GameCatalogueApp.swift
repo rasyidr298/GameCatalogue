@@ -12,6 +12,7 @@ struct GameCatalogueApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(GamesViewModel())
         }
     }
 }

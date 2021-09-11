@@ -14,6 +14,9 @@ class GamesViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var noInternet = false
     
+    @Published var isLoadingSearch = false
+    @Published var noInternetSearch = false
+    
     var didChange = ObservableObjectPublisher()
     
     @Published var games = GamesResponse(results: []){
@@ -107,20 +110,22 @@ class GamesViewModel: ObservableObject {
     
     func searchGame(query : String){
         
+        searchGame.results.removeAll()
+        
         let url = "games?search=\(query)&key=\(key)"
         
         if !Connectivity.isConnectedToInternet(){
             
-            self.noInternet = false
+            self.noInternetSearch = true
             
         }else{
-            self.isLoading = true
+            self.isLoadingSearch = true
             
             NetworkManager(data: [:], headers: [:], url: url, service: nil, method: .get, isJSONRequest: false).executeQuery{
                 (result : Result<GamesResponse, Error>) in
                 
-                self.isLoading = false
-                self.noInternet = false
+                self.isLoadingSearch = false
+                self.noInternetSearch = false
                 
                 switch result{
                 
@@ -137,6 +142,7 @@ class GamesViewModel: ObservableObject {
                     print("error search game : \(error)")
                     
                 }
+                
             }
         }
         

@@ -15,6 +15,7 @@ class GamesViewModel: ObservableObject {
     @Published var noInternet = false
     
     var didChange = ObservableObjectPublisher()
+    
     @Published var games = GamesResponse(results: []){
         didSet {
             objectWillChange.send()
@@ -22,6 +23,12 @@ class GamesViewModel: ObservableObject {
     }
     
     @Published var detailGames = DetailGameResponse(platforms: [], genres: []){
+        didSet {
+            objectWillChange.send()
+        }
+    }
+    
+    @Published var searchGame = GamesResponse(results: []){
         didSet {
             objectWillChange.send()
         }
@@ -43,6 +50,7 @@ class GamesViewModel: ObservableObject {
                 (result: Result<GamesResponse, Error>) in
                 
                 self.isLoading = false
+                self.noInternet = false
                 
                 switch result{
                 
@@ -74,6 +82,9 @@ class GamesViewModel: ObservableObject {
             
             NetworkManager(data: [:], headers: [:], url: url, service: nil, method: .get, isJSONRequest: false).executeQuery{
                 (result : Result<DetailGameResponse, Error>) in
+                
+                self.isLoading = false
+                self.noInternet = false
                 
                 switch result{
                 
@@ -108,6 +119,9 @@ class GamesViewModel: ObservableObject {
             NetworkManager(data: [:], headers: [:], url: url, service: nil, method: .get, isJSONRequest: false).executeQuery{
                 (result : Result<GamesResponse, Error>) in
                 
+                self.isLoading = false
+                self.noInternet = false
+                
                 switch result{
                 
                 case .success(let response) :
@@ -115,7 +129,7 @@ class GamesViewModel: ObservableObject {
                     print("succes search game : \(response.results.count)")
                     
                     DispatchQueue.main.async {
-                        self.games = response
+                        self.searchGame = response
                     }
                     
                 case.failure(let error) :

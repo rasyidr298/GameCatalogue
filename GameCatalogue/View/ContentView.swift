@@ -18,12 +18,12 @@ struct ContentView: View {
                 }
             FavoriteView()
                 .tabItem{
-                    Image(systemName: "")
+                    Image(systemName: "heart.fill")
                     Text("Favorite")
                 }
             ProfileView()
                 .tabItem{
-                    Image(systemName: "")
+                    Image(systemName: "person.crop.circle")
                     Text("Profile")
                 }
         }.accentColor(.green)
@@ -32,6 +32,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView().environmentObject(GamesViewModel())
     }
 }

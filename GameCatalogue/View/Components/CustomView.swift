@@ -13,7 +13,7 @@ import Lottie
 struct Indicator : UIViewRepresentable {
     func makeUIView(context: UIViewRepresentableContext<Indicator>) -> UIActivityIndicatorView {
         let indi = UIActivityIndicatorView(style: .large)
-        indi.color = UIColor.red
+        indi.color = UIColor.green
         return indi
     }
     
@@ -99,8 +99,20 @@ func customTabView(){
     UITabBar.appearance().standardAppearance = tabBarAppeareance
 }
 
+//Custom Shape
+struct CustomShape : Shape {
+    var corner : UIRectCorner
+    var radius : CGFloat
+    
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corner, cornerRadii: CGSize(width: radius, height: radius))
+        
+        return Path(path.cgPath)
+    }
+}
+
 struct CustomView_Previews: PreviewProvider {
     static var previews: some View {
-        ReconectView {}
+        CustomShape(corner: [.bottomLeft, .bottomRight], radius: 20)
     }
 }

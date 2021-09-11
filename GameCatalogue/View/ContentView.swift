@@ -16,6 +16,11 @@ struct ContentView: View {
                     Image(systemName: "house.fill")
                     Text("Home")
                 }
+            SearchView()
+                .tabItem{
+                    Image(systemName: "magnifyingglass")
+                    Text("Search")
+                }
             FavoriteView()
                 .tabItem{
                     Image(systemName: "heart.fill")

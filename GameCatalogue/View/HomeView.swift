@@ -41,15 +41,34 @@ struct HomeView: View {
 struct ContentHomeView : View {
     
     @EnvironmentObject var gameViewModel : GamesViewModel
+    @Namespace var topID
+    @Namespace var bottomID
     
     var body: some View{
         ScrollView(.vertical){
+            
             ForEach(Array(gameViewModel.games.results.enumerated()), id:\.offset){
                 offset, games in
                 
                 ContentItemView(games: games)
-                
             }
+            
+            Button(action: {
+                gameViewModel.page += 1
+                gameViewModel.getGames()
+            }, label: {
+                if gameViewModel.isLoading{
+                    Indicator()
+                }else{
+                    VStack{
+                        Text("Next Page..").font(.caption)
+                        Image(systemName: "arrowtriangle.down.circle.fill")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                    }
+                }
+                
+            }).padding(.bottom, 40)
         }
     }
 }

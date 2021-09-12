@@ -12,6 +12,8 @@ import CoreData
 
 class GamesViewModel: ObservableObject {
     
+    var page : Int = 2
+    
     @Published var isLoading = false
     @Published var noInternet = false
     
@@ -19,12 +21,6 @@ class GamesViewModel: ObservableObject {
     @Published var noInternetSearch = false
     
     @Published var itemClickId : Int = 0
-    
-    @Published var showModal: Bool = false{
-        didSet {
-            objectWillChange.send()
-        }
-    }
     
     var didChange = ObservableObjectPublisher()
     
@@ -46,10 +42,16 @@ class GamesViewModel: ObservableObject {
         }
     }
     
+    @Published var showModal: Bool = false{
+        didSet {
+            objectWillChange.send()
+        }
+    }
+    
     
     func getGames(){
         
-        let url : String = "games?key=\(key)"
+        let url : String = "games?key=\(key)&page=\(page)"
         
         if !Connectivity.isConnectedToInternet(){
             
@@ -71,7 +73,7 @@ class GamesViewModel: ObservableObject {
                     print("succes get games : \(response.results.count)")
                     
                     DispatchQueue.main.async {
-                        self.games = response
+                        self.games.results.append(contentsOf: response.results)
                     }
                     
                 case.failure(let error) :

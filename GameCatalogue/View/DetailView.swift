@@ -36,9 +36,11 @@ struct DetailView: View {
 struct ContentDetailView : View {
     
     @EnvironmentObject var gameViewModel : GamesViewModel
+    @Environment(\.managedObjectContext) var context
+    @Environment(\.colorScheme) var colorSchema
     
     var body: some View{
-        ScrollView(.vertical){
+        ScrollView(.vertical, showsIndicators : false){
             VStack(alignment: .leading, spacing: 0, content: {
                 
                 WebImage(url: URL(string : "\(gameViewModel.detailGames.background_image ?? "")"))
@@ -47,10 +49,28 @@ struct ContentDetailView : View {
                     .aspectRatio(contentMode: .fit)
                     .transition(.fade(duration: 0.5))
                 
+                HStack{
+                    Text("")
+                    Spacer()
+                    Button(action: {
+                        gameViewModel.addFavorite(context: context)
+                    }, label: {
+                        Image(systemName: "plus.circle.fill")
+                            .resizable()
+                            .foregroundColor(Color.green)
+                            .frame(width: 30, height: 30)
+                            .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 20))
+                    })
+                }
+                .frame(width: UIScreen.main.bounds.width, height: 50, alignment: .center)
+                .background(colorSchema == .dark ? Color(UIColor.systemBackground) : Color.white)
+                .clipShape(CustomShape(corner: [.topLeft, .topRight], radius: 20))
+                .padding(EdgeInsets(top: -15, leading: 0, bottom: 0, trailing: 0))
+                
                 VStack(alignment: .leading){
                     
                     Text(gameViewModel.detailGames.name ?? "")
-                        .font(.title)
+                        .font(.title).padding(.top ,-25)
                     
                     Text(gameViewModel.detailGames.released ?? "")
                         .font(.callout)

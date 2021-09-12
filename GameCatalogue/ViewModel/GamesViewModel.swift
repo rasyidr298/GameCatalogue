@@ -8,6 +8,7 @@
 import Foundation
 import Alamofire
 import Combine
+import CoreData
 
 class GamesViewModel: ObservableObject {
     
@@ -18,6 +19,12 @@ class GamesViewModel: ObservableObject {
     @Published var noInternetSearch = false
     
     @Published var itemClickId : Int = 0
+    
+    @Published var showModal: Bool = false{
+        didSet {
+            objectWillChange.send()
+        }
+    }
     
     var didChange = ObservableObjectPublisher()
     
@@ -148,5 +155,24 @@ class GamesViewModel: ObservableObject {
             }
         }
         
+    }
+    
+    func addFavorite(context : NSManagedObjectContext){
+        let game = Game(context: context)
+        
+        game.id = Int32(detailGames.id!)
+        game.name = detailGames.name
+        game.backgroundImage = detailGames.background_image
+        game.released = detailGames.released
+        game.rating = Int16(detailGames.rating!)
+        game.game_description = detailGames.description
+        game.addedGame = Date()
+        
+        do{
+            try context.save()
+            showModal = false
+        }catch{
+            print(error.localizedDescription)
+        }
     }
 }

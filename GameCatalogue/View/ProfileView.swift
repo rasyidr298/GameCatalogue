@@ -9,7 +9,33 @@ import SwiftUI
 
 struct ProfileView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+          VStack {
+            HStack {
+              Image("img_profile")
+                .resizable()
+                .clipShape(Circle())
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 100, height: 100, alignment: .center)
+            }
+            Form {
+              Section(header:
+                        Text("Biodata")
+                        .font(.body)
+                        .fontWeight(.bold)) {
+                Text("Rasyid Ridla")
+                Text("Rasyidridla298@gmail.com")
+                HStack {
+                  Text("+62")
+                  Text("87715441292")
+                }
+                Text("linkedin.com/in/rasyidr298/")
+                Text("github.com/rasyidr298")
+              }
+            }
+            .navigationBarTitle("Account")
+          }
+        }
     }
 }
 

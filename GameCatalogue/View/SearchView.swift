@@ -22,7 +22,7 @@ struct SearchView: View {
                 if gameViewModel.isLoadingSearch{
                     Indicator()
                 }else{
-                    ContentSearchView(searchText: $searchText).navigationBarTitle("", displayMode: .inline)
+                    ContentSearchView(searchText: $searchText).navigationBarTitle("Search")
                 }
                 
             }
@@ -40,44 +40,44 @@ struct ContentSearchView : View {
     @State var disableTextField : Bool = false
     
     var body: some View{
-        VStack{
-            HStack {
-                
-                Image(systemName: "magnifyingglass").foregroundColor(Color("gray"))
-                TextField("Search", text: $inputSearch, onEditingChanged: { textChange in
-                    if textChange{}else{gameViewModel.searchGame(query: searchText)}
-                }, onCommit: {
-                    self.searchText = inputSearch
-                })
-                .disabled(disableTextField)
-                .padding(.horizontal, 10).padding(.vertical, 8)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .cornerRadius(10)
-                
-                Button(action: {
-                    searchText = ""
-                    inputSearch = ""
-                }) {
-                    Image(systemName: "xmark.circle.fill").foregroundColor(Color("gray")).opacity(searchText == "" ? 0 : 1)
+        ScrollView(.vertical){
+            VStack{
+                HStack {
+                    
+                    Image(systemName: "magnifyingglass").foregroundColor(Color("gray"))
+                    TextField("Search", text: $inputSearch, onEditingChanged: { textChange in
+                        if textChange{}else{gameViewModel.searchGame(query: searchText)}
+                    }, onCommit: {
+                        self.searchText = inputSearch
+                    })
+                    .disabled(disableTextField)
+                    .padding(.horizontal, 10).padding(.vertical, 8)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .cornerRadius(10)
+                    
+                    Button(action: {
+                        searchText = ""
+                        inputSearch = ""
+                    }) {
+                        Image(systemName: "xmark.circle.fill").foregroundColor(Color("gray")).opacity(searchText == "" ? 0 : 1)
+                    }
                 }
-            }
-            .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
-            .onAppear{
-                inputSearch = searchText
-                disableTextField = false
-            }
-            .onDisappear{
-                disableTextField = true
-            }
-            
-            ScrollView(.vertical){
+                .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
+                .onAppear{
+                    inputSearch = searchText
+                    disableTextField = false
+                }
+                .onDisappear{
+                    disableTextField = true
+                }
+                
                 ForEach(Array(gameViewModel.searchGame.results.enumerated()), id:\.offset){
                     offser, games in
                     
                     ContentItemView(games: games)
                 }
-                
             }
+            
         }
     }
 }

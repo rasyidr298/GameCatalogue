@@ -8,39 +8,10 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct itemHomeView: View {
-    @EnvironmentObject var gameViewModel : GamesViewModel
-    
-    var body: some View {
-        ScrollView(.vertical){
-            ForEach(Array(gameViewModel.games.results.enumerated()), id:\.offset){
-                offser, games in
-                
-                ContentItemView(games: games)
-                
-            }
-            
-        }
-    }
-}
-
-struct itemSearchlView: View {
-    @EnvironmentObject var gameViewModel : GamesViewModel
-    
-    var body: some View {
-        
-        ScrollView(.vertical){
-            ForEach(Array(gameViewModel.searchGame.results.enumerated()), id:\.offset){
-                offser, games in
-                
-                ContentItemView(games: games)
-            }
-            
-        }
-    }
-}
-
 struct ContentItemView : View{
+    
+    @EnvironmentObject var gameViewModel : GamesViewModel
+    @State var showModal = false
     var games : Games
     
     var body: some View{
@@ -51,7 +22,9 @@ struct ContentItemView : View{
                 
                 WebImage(url: URL(string : "\(games.background_image ?? "")"))
                     .resizable()
-                    .placeholder {Rectangle().foregroundColor(.gray)}
+                    .placeholder {Rectangle().foregroundColor(Color("gray"))
+                        
+                    }
                     .aspectRatio(contentMode: .fit)
                     .clipShape(CustomShape(corner: [.bottomLeft, .bottomRight], radius: 10))
                     .transition(.fade(duration: 0.5))
@@ -68,25 +41,26 @@ struct ContentItemView : View{
                 
             }
             
-            HStack{
-                ForEach(0..<Int((games.rating?.rounded(.down))!)){rating in
-                    Image(systemName: "star.fill")
-                        .foregroundColor(Color.yellow)
-                }
-            }
+            RatingStar(rate: Int(games.rating!), size: 15).padding(.bottom, 0)
             .padding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 20))
             
         }
-        .background(Color.secondary)
         .cornerRadius(10)
         .padding(EdgeInsets(top: 0, leading: 10, bottom: 20, trailing: 10))
+        .onTapGesture {
+            self.showModal.toggle()
+            gameViewModel.itemClickId = games.id!
+            
+        }.sheet(isPresented: $showModal, content: {
+            DetailView()
+                .environmentObject(gameViewModel)
+        })
         
     }
 }
 
-struct ItemView_Previews: PreviewProvider {
-    static var previews: some View {
-        itemHomeView()
-            .environmentObject(GamesViewModel())
-    }
-}
+//struct ItemView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentItemView()
+//    }
+//}

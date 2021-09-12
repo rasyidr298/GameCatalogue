@@ -43,23 +43,25 @@ struct ContentSearchView : View {
         VStack{
             HStack {
                 
-                Image(systemName: "magnifyingglass").foregroundColor(.secondary)
+                Image(systemName: "magnifyingglass").foregroundColor(Color("gray"))
                 TextField("Search", text: $inputSearch, onEditingChanged: { textChange in
                     if textChange{}else{gameViewModel.searchGame(query: searchText)}
                 }, onCommit: {
                     self.searchText = inputSearch
                 })
                 .disabled(disableTextField)
-                .padding(.horizontal, 10).padding(.vertical, 8).background(Color.secondary).cornerRadius(10)
+                .padding(.horizontal, 10).padding(.vertical, 8)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .cornerRadius(10)
                 
                 Button(action: {
                     searchText = ""
                     inputSearch = ""
                 }) {
-                    Image(systemName: "xmark.circle.fill").foregroundColor(.secondary).opacity(searchText == "" ? 0 : 1)
+                    Image(systemName: "xmark.circle.fill").foregroundColor(Color("gray")).opacity(searchText == "" ? 0 : 1)
                 }
             }
-            .padding(EdgeInsets(top: 0, leading: 10, bottom: 10, trailing: 10))
+            .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
             .onAppear{
                 inputSearch = searchText
                 disableTextField = false
@@ -68,11 +70,14 @@ struct ContentSearchView : View {
                 disableTextField = true
             }
             
-            itemSearchlView()
-                .onTapGesture {self.showModal.toggle()}
-                .sheet(isPresented: $showModal, content: {
-                    DetailView().environmentObject(GamesViewModel())
-                })
+            ScrollView(.vertical){
+                ForEach(Array(gameViewModel.searchGame.results.enumerated()), id:\.offset){
+                    offser, games in
+                    
+                    ContentItemView(games: games)
+                }
+                
+            }
         }
     }
 }

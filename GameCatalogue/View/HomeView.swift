@@ -22,8 +22,11 @@ struct HomeView: View {
                     AnyView(LoadingAnim())
                 }else{
                     ContentHomeView()
-                        .navigationBarTitle("", displayMode: .inline)
+                        .navigationBarTitle("Game")
                 }
+            }else{
+                ContentHomeView()
+                    .navigationBarTitle("Game")
             }
             
         }
@@ -32,23 +35,22 @@ struct HomeView: View {
                 gameViewModel.getGames()
             }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
 struct ContentHomeView : View {
     
     @EnvironmentObject var gameViewModel : GamesViewModel
-    @State var showModal = false
-    @State var searchText = ""
     
     var body: some View{
-        
-        ItemView()
-            .onTapGesture {self.showModal.toggle()}
-            .sheet(isPresented: $showModal, content: {
-                DetailView().environmentObject(GamesViewModel())
-            })
+        ScrollView(.vertical){
+            ForEach(Array(gameViewModel.games.results.enumerated()), id:\.offset){
+                offset, games in
+                
+                ContentItemView(games: games)
+                
+            }
+        }
     }
 }
 

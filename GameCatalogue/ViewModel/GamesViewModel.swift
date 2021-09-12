@@ -17,6 +17,8 @@ class GamesViewModel: ObservableObject {
     @Published var isLoadingSearch = false
     @Published var noInternetSearch = false
     
+    @Published var itemClickId : Int = 0
+    
     var didChange = ObservableObjectPublisher()
     
     @Published var games = GamesResponse(results: []){

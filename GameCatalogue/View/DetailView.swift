@@ -6,15 +6,107 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct DetailView: View {
+    
+    @EnvironmentObject var gameViewModel : GamesViewModel
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        ZStack{
+            
+            if gameViewModel.noInternet{
+                AnyView(ReconectView(message : "No Internet Connection..", action: {
+                    gameViewModel.detailGames(id: gameViewModel.itemClickId)
+                }))
+            }else if gameViewModel.isLoading{
+                AnyView(LoadingAnim())
+            }else{
+                ContentDetailView()
+            }
+            
+        }
+        .onAppear{
+            gameViewModel.detailGames(id: gameViewModel.itemClickId)
+        }
+    }
+}
+
+struct ContentDetailView : View {
+    
+    @EnvironmentObject var gameViewModel : GamesViewModel
+    
+    var body: some View{
+        ScrollView(.vertical){
+            VStack(alignment: .leading, spacing: 0, content: {
+                
+                WebImage(url: URL(string : "\(gameViewModel.detailGames.background_image ?? "")"))
+                    .resizable()
+                    .placeholder {Rectangle().foregroundColor(Color("gray"))}
+                    .aspectRatio(contentMode: .fit)
+                    .transition(.fade(duration: 0.5))
+                
+                VStack(alignment: .leading){
+                    
+                    Text(gameViewModel.detailGames.name ?? "")
+                        .font(.title)
+                    
+                    Text(gameViewModel.detailGames.released ?? "")
+                        .font(.callout)
+                    
+                    RatingStar(rate: Int(gameViewModel.detailGames.rating ?? 0.0), size: 20)
+                    
+                    ScrollView(.horizontal, showsIndicators : false){
+                        HStack(spacing : 0){
+                            ForEach(Array(gameViewModel.detailGames.genres.enumerated()), id : \.offset){
+                                offset, genre in
+                                
+                                Text(genre?.name ?? "")
+                                    .font(.callout)
+                                    .padding(3)
+                                    .background(Color.green)
+                                    .clipShape(CustomShape(corner: [.allCorners], radius: 5))
+                                    .multilineTextAlignment(.center)
+                                Text(" ")
+                            }
+                        }
+                    }.padding(.top, 10)
+                    
+                    Text("Platform Support :").font(.title3).bold().padding(.top, 20)
+                    
+                    ScrollView(.horizontal, showsIndicators : false){
+                        HStack(alignment : .center){
+                            ForEach(Array(gameViewModel.detailGames.platforms.enumerated()), id : \.offset){
+                                offset, platform in
+                                
+                                Text(platform?.platform?.name ?? "")
+                                    .font(.callout)
+                                    .frame(width: 90, height: 80)
+                                    .background(Color.green)
+                                    .clipShape(CustomShape(corner: [.allCorners], radius: 10))
+                                    .multilineTextAlignment(.center)
+                            }
+                        }
+                    }
+                    
+                    Text("Description :")
+                        .bold()
+                        .font(.title2).padding(.top, 20)
+                    Text(gameViewModel.detailGames.description?.withoutHtmlTags() ?? "").font(.body).padding(.top, 10)
+                    
+                }
+                .padding(EdgeInsets(top : 20, leading :20, bottom : 20, trailing: 20))
+                
+            })
+            Spacer()
+        }
     }
 }
 
 struct DetailView_Previews: PreviewProvider {
     static var previews: some View {
-        DetailView()
+        ContentDetailView()
+            .environmentObject(GamesViewModel())
     }
 }

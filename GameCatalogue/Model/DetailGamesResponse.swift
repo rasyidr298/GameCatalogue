@@ -8,33 +8,31 @@
 import Foundation
 
 struct DetailGameResponse : Codable {
-    var id : Int? = 0
-    var name : String? = ""
-    var description: String? = ""
-    var released : String? = ""
-    var background_image : String? = ""
-    var rating : Float? = 0.0
-    var metacritic: Int32? = -1
-    var playtime : Int? = 0
-    var platforms: [Platform]
-    var genres: [Genre]
+    var id : Int?
+    var name, description, released, background_image : String?
+    var rating : Float?
+    var platforms: [Platforms?]
+    var genres: [Genre?]
+}
+
+struct Platforms : Codable, Identifiable  {
+    var id = UUID()
+    var platform : Platform?
     
-    struct Platform : Codable, Identifiable {
-        var id = UUID()
-        var name : String? = ""
-        
-        enum CodingKeys : CodingKey {
-            case name
-        }
+    enum CodingKeys : CodingKey {
+        case platform
     }
+}
+
+struct Platform : Codable {
+    var name : String?
+}
+
+struct Genre : Codable, Identifiable {
+    var id = UUID()
+    var name : String?
     
-    struct Genre : Codable, Identifiable {
-        var id = UUID()
-        var name : String? = ""
-        
-        enum CodingKeys : CodingKey {
-            case name
-        }
+    enum CodingKeys : CodingKey {
+        case name
     }
-    
 }

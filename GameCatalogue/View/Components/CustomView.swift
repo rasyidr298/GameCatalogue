@@ -92,6 +92,27 @@ struct ReconectView : View {
     }
 }
 
+struct RatingStar: View {
+    let rate: Int
+    let size: CGFloat
+
+    var body : some View {
+        HStack {
+            if rate > 0 {
+                ForEach((1...rate), id: \.self) { _ in
+                    Image(systemName: "star.fill")
+                        .resizable()
+                        .frame(width: size,
+                               height: size,
+                               alignment: Alignment/*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                        .foregroundColor(.yellow)
+                }
+            }
+        }
+    }
+}
+
+
 //custom TabView
 func customTabView(){
     let tabBarAppeareance = UITabBarAppearance()
@@ -108,6 +129,13 @@ struct CustomShape : Shape {
         let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corner, cornerRadii: CGSize(width: radius, height: radius))
         
         return Path(path.cgPath)
+    }
+}
+
+extension String {
+    func withoutHtmlTags() -> String {
+        let str = self.replacingOccurrences(of: "<style>[^>]+</style>", with: "", options: .regularExpression, range: nil)
+        return str.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
     }
 }
 

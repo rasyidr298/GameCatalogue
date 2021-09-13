@@ -74,7 +74,7 @@ struct ContentSearchView: View {
                 ForEach(Array(gameViewModel.searchGame.results.enumerated()), id: \.offset) {
                     _, games in
 
-                    ContentItemView(games: games)
+                    ContentItemView(games: games!)
                 }
             }
 

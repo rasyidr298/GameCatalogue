@@ -53,7 +53,6 @@ class NetworkManager: NSObject {
                             completion(.success(try JSONDecoder().decode(T.self, from: res)))
                         } catch let error {
                             print("data : \(res.count)")
-                            //                            print(String(data: res, encoding: .utf8) ?? "nothing received")
                             completion(.failure(error))
                         }
                     default:

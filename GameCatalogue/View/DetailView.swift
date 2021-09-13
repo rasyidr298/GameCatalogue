@@ -18,7 +18,7 @@ struct DetailView: View {
 
             if gameViewModel.noInternet {
                 AnyView(ReconectView(message: "No Internet Connection..", action: {
-                    gameViewModel.detailGames(id: gameViewModel.itemClickId)
+                    gameViewModel.detailGames(idGames: gameViewModel.itemClickId)
                 }))
             } else if gameViewModel.isLoading {
                 AnyView(LoadingAnim())
@@ -28,7 +28,7 @@ struct DetailView: View {
 
         }
         .onAppear {
-            gameViewModel.detailGames(id: gameViewModel.itemClickId)
+            gameViewModel.detailGames(idGames: gameViewModel.itemClickId)
         }
     }
 }
@@ -43,7 +43,7 @@ struct ContentDetailView: View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 0, content: {
 
-                WebImage(url: URL(string: "\(gameViewModel.detailGames.background_image ?? "")"))
+                WebImage(url: URL(string: "\(gameViewModel.detailGames.backgroundImage ?? "")"))
                     .resizable()
                     .placeholder {Rectangle().foregroundColor(Color("gray"))}
                     .aspectRatio(contentMode: .fit)

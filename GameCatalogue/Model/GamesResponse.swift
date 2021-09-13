@@ -8,18 +8,17 @@
 import Foundation
 
 struct GamesResponse: Codable {
-    var results: [Games]
+    var results: [Games?]
 }
 
 struct Games: Codable, Identifiable {
     var idGames = UUID()
-    var id: Int? = 0
-    var name: String? = ""
-    var released: String? = ""
-    var rating: Float? = 0.0
-    var background_image: String? = ""
+    var id: Int?
+    var name, released, backgroundImage : String?
+    var rating: Float?
 
-    enum CodingKeys: CodingKey {
-        case id, name, rating, released, background_image
+    enum CodingKeys: String, CodingKey {
+        case id, name, rating, released
+        case backgroundImage = "background_image"
     }
 }

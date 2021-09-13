@@ -50,7 +50,7 @@ class GamesViewModel: ObservableObject {
     
     func getGames() {
         
-        let url: String = "games?key=\(key)&page=\(page)"
+        let url: String = "games?key=\(apiKey)&page=\(page)"
         
         if !Connectivity.isConnectedToInternet() {
             
@@ -82,8 +82,8 @@ class GamesViewModel: ObservableObject {
         }
     }
     
-    func detailGames(id: Int) {
-        let url = "games/\(id)?key=\(key)"
+    func detailGames(idGames: Int) {
+        let url = "games/\(idGames)?key=\(apiKey)"
         
         if !Connectivity.isConnectedToInternet() {
             
@@ -120,7 +120,7 @@ class GamesViewModel: ObservableObject {
         
         searchGame.results.removeAll()
         
-        let url = "games?search=\(query)&key=\(key)"
+        let url = "games?search=\(query)&key=\(apiKey)"
         
         if !Connectivity.isConnectedToInternet() {
             
@@ -160,7 +160,7 @@ class GamesViewModel: ObservableObject {
         
         game.id = Int32(detailGames.id!)
         game.name = detailGames.name
-        game.backgroundImage = detailGames.background_image
+        game.backgroundImage = detailGames.backgroundImage
         game.released = detailGames.released
         game.rating = Int16(detailGames.rating!)
         game.game_description = detailGames.description

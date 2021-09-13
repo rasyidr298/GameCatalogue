@@ -6,7 +6,24 @@
 //
 import Foundation
 
-var key = "0d26d24c6314431f97ce33207c57eb42"
+var apiKey: String {
+  get {
+    // 1
+    guard let filePath = Bundle.main.path(forResource: "RAWG-Info", ofType: "plist") else {
+      fatalError("Couldn't find file 'RAWG-Info.plist'.")
+    }
+    // 2
+    let plist = NSDictionary(contentsOfFile: filePath)
+    guard let value = plist?.object(forKey: "API_KEY") as? String else {
+      fatalError("Couldn't find key 'API_KEY' in 'RAWG-Info.plist'.")
+    }
+    // 3
+    if (value.starts(with: "_")) {
+      fatalError("Register for a RAWG developer account and get an API key at...")
+    }
+    return value
+  }
+}
 
 enum Services: String {
     case service = ""

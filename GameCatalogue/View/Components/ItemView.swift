@@ -19,7 +19,7 @@ struct ContentItemView: View {
 
             VStack(alignment: .leading, spacing: nil) {
 
-                WebImage(url: URL(string: "\(games.background_image ?? "")"))
+                WebImage(url: URL(string: "\(games.backgroundImage ?? "")"))
                     .resizable()
                     .placeholder {Rectangle().foregroundColor(Color("gray"))}
                     .aspectRatio(contentMode: .fit)

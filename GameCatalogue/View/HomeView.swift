@@ -50,7 +50,7 @@ struct ContentHomeView: View {
             ForEach(Array(gameViewModel.games.results.enumerated()), id: \.offset) {
                 _, games in
 
-                ContentItemView(games: games)
+                ContentItemView(games: games!)
             }
 
             Button(action: {

@@ -8,45 +8,45 @@
 import SwiftUI
 
 struct SearchView: View {
-    @EnvironmentObject var gameViewModel : GamesViewModel
+    @EnvironmentObject var gameViewModel: GamesViewModel
     @State var searchText = ""
-    
+
     var body: some View {
-        NavigationView{
-            
-            if gameViewModel.noInternetSearch{
+        NavigationView {
+
+            if gameViewModel.noInternetSearch {
                 ReconectView(message: "No internet Connection..") {
                     gameViewModel.searchGame(query: searchText)
                 }
-            }else{
-                if gameViewModel.isLoadingSearch{
+            } else {
+                if gameViewModel.isLoadingSearch {
                     Indicator()
-                }else{
+                } else {
                     ContentSearchView(searchText: $searchText).navigationBarTitle("Search")
                 }
-                
+
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
-struct ContentSearchView : View {
-    
-    @EnvironmentObject var gameViewModel : GamesViewModel
+struct ContentSearchView: View {
+
+    @EnvironmentObject var gameViewModel: GamesViewModel
     @State var showModal = false
-    @Binding var searchText : String
-    @State var inputSearch : String = ""
-    @State var disableTextField : Bool = false
-    
-    var body: some View{
-        ScrollView(.vertical){
-            VStack{
+    @Binding var searchText: String
+    @State var inputSearch: String = ""
+    @State var disableTextField: Bool = false
+
+    var body: some View {
+        ScrollView(.vertical) {
+            VStack {
                 HStack {
-                    
+
                     Image(systemName: "magnifyingglass").foregroundColor(Color("gray"))
                     TextField("Search", text: $inputSearch, onEditingChanged: { textChange in
-                        if textChange{}else{gameViewModel.searchGame(query: searchText)}
+                        if textChange {} else {gameViewModel.searchGame(query: searchText)}
                     }, onCommit: {
                         self.searchText = inputSearch
                     })
@@ -54,7 +54,7 @@ struct ContentSearchView : View {
                     .padding(.horizontal, 10).padding(.vertical, 8)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .cornerRadius(10)
-                    
+
                     Button(action: {
                         searchText = ""
                         inputSearch = ""
@@ -63,21 +63,21 @@ struct ContentSearchView : View {
                     }
                 }
                 .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
-                .onAppear{
+                .onAppear {
                     inputSearch = searchText
                     disableTextField = false
                 }
-                .onDisappear{
+                .onDisappear {
                     disableTextField = true
                 }
-                
-                ForEach(Array(gameViewModel.searchGame.results.enumerated()), id:\.offset){
-                    offser, games in
-                    
+
+                ForEach(Array(gameViewModel.searchGame.results.enumerated()), id: \.offset) {
+                    _, games in
+
                     ContentItemView(games: games)
                 }
             }
-            
+
         }
     }
 }

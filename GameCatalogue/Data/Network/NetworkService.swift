@@ -6,10 +6,9 @@
 //
 import Foundation
 
-
 var key = "0d26d24c6314431f97ce33207c57eb42"
 
-enum services : String{
+enum Services: String {
     case service = ""
 }
 
@@ -21,4 +20,4 @@ var baseURL: String {
     }
 }
 
-class NetworkService : NSObject{}
+class NetworkService: NSObject {}

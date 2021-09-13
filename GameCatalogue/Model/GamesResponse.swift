@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct GamesResponse : Codable {
-    var results : [Games]
+struct GamesResponse: Codable {
+    var results: [Games]
 }
 
 struct Games: Codable, Identifiable {
@@ -16,11 +16,10 @@ struct Games: Codable, Identifiable {
     var id: Int? = 0
     var name: String? = ""
     var released: String? = ""
-    var rating : Float? = 0.0
+    var rating: Float? = 0.0
     var background_image: String? = ""
-    
+
     enum CodingKeys: CodingKey {
-        case id, name,rating, released, background_image
+        case id, name, rating, released, background_image
     }
 }
-

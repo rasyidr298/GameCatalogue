@@ -9,28 +9,27 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct FavoriteView: View {
-    
-    @EnvironmentObject var gameViewModel : GamesViewModel
+
+    @EnvironmentObject var gameViewModel: GamesViewModel
     @Environment(\.managedObjectContext) var context
-    @FetchRequest(entity: Game.entity(), sortDescriptors: [NSSortDescriptor(key: "addedGame", ascending :false)], animation: .spring()) var result : FetchedResults<Game>
-    
+    @FetchRequest(entity: Game.entity(), sortDescriptors: [NSSortDescriptor(key: "addedGame", ascending: false)], animation: .spring()) var result: FetchedResults<Game>
+
     var body: some View {
-        NavigationView{
-            VStack{
-                ScrollView(.vertical){
-                    ForEach(Array(result.enumerated()), id:\.offset){
-                        offset, games in
-                        
+        NavigationView {
+            VStack {
+                ScrollView(.vertical) {
+                    ForEach(Array(result.enumerated()), id: \.offset) {_, games in
+
                         FavoriteItemView(games: games)
-                            .contextMenu{
-                                
+                            .contextMenu {
+
                                 Button(action: {
                                     context.delete(games)
                                     try! context.save()
                                 }, label: {
                                     Text("Delete")
                                 })
-                                
+
                             }
                     }
                 }
@@ -38,7 +37,6 @@ struct FavoriteView: View {
         }
     }
 }
-
 
 struct FavoriteView_Previews: PreviewProvider {
     static var previews: some View {

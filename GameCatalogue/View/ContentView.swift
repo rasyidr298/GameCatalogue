@@ -8,26 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+
     var body: some View {
-        TabView{
+        TabView {
             HomeView()
-                .tabItem{
+                .tabItem {
                     Image(systemName: "house.fill")
                     Text("Home")
                 }
             SearchView()
-                .tabItem{
+                .tabItem {
                     Image(systemName: "magnifyingglass")
                     Text("Search")
                 }
             FavoriteView()
-                .tabItem{
+                .tabItem {
                     Image(systemName: "heart.fill")
                     Text("Favorite")
                 }
             ProfileView()
-                .tabItem{
+                .tabItem {
                     Image(systemName: "person.crop.circle")
                     Text("Profile")
                 }

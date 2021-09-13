@@ -12,7 +12,7 @@ import CoreData
 
 class GamesViewModel: ObservableObject {
     
-    var page : Int = 2
+    var page: Int = 2
     
     @Published var isLoading = false
     @Published var noInternet = false
@@ -20,53 +20,51 @@ class GamesViewModel: ObservableObject {
     @Published var isLoadingSearch = false
     @Published var noInternetSearch = false
     
-    @Published var itemClickId : Int = 0
+    @Published var itemClickId: Int = 0
     
     var didChange = ObservableObjectPublisher()
     
-    @Published var games = GamesResponse(results: []){
+    @Published var games = GamesResponse(results: []) {
         didSet {
             objectWillChange.send()
         }
     }
     
-    @Published var detailGames = DetailGameResponse(platforms: [], genres: []){
+    @Published var detailGames = DetailGameResponse(platforms: [], genres: []) {
         didSet {
             objectWillChange.send()
         }
     }
     
-    @Published var searchGame = GamesResponse(results: []){
+    @Published var searchGame = GamesResponse(results: []) {
         didSet {
             objectWillChange.send()
         }
     }
     
-    @Published var showModal: Bool = false{
+    @Published var showModal: Bool = false {
         didSet {
             objectWillChange.send()
         }
     }
     
-    
-    func getGames(){
+    func getGames() {
         
-        let url : String = "games?key=\(key)&page=\(page)"
+        let url: String = "games?key=\(key)&page=\(page)"
         
-        if !Connectivity.isConnectedToInternet(){
+        if !Connectivity.isConnectedToInternet() {
             
             self.noInternet = true
             
-        }else{
+        } else {
             self.isLoading = true
             
-            NetworkManager(data: [:], headers: [:], url: url, service: nil, method: .get, isJSONRequest: false).executeQuery {
-                (result: Result<GamesResponse, Error>) in
+            NetworkManager(data: [:], headers: [:], url: url, service: nil, method: .get, isJSONRequest: false).executeQuery {(result: Result<GamesResponse, Error>) in
                 
                 self.isLoading = false
                 self.noInternet = false
                 
-                switch result{
+                switch result {
                 
                 case.success(let response) :
                     
@@ -84,23 +82,22 @@ class GamesViewModel: ObservableObject {
         }
     }
     
-    func detailGames(id : Int){
+    func detailGames(id: Int) {
         let url = "games/\(id)?key=\(key)"
         
-        if !Connectivity.isConnectedToInternet(){
+        if !Connectivity.isConnectedToInternet() {
             
             self.noInternet = false
             
-        }else{
+        } else {
             self.isLoading = true
             
-            NetworkManager(data: [:], headers: [:], url: url, service: nil, method: .get, isJSONRequest: false).executeQuery{
-                (result : Result<DetailGameResponse, Error>) in
+            NetworkManager(data: [:], headers: [:], url: url, service: nil, method: .get, isJSONRequest: false).executeQuery {(result: Result<DetailGameResponse, Error>) in
                 
                 self.isLoading = false
                 self.noInternet = false
                 
-                switch result{
+                switch result {
                 
                 case .success(let response) :
                     
@@ -119,26 +116,25 @@ class GamesViewModel: ObservableObject {
         }
     }
     
-    func searchGame(query : String){
+    func searchGame(query: String) {
         
         searchGame.results.removeAll()
         
         let url = "games?search=\(query)&key=\(key)"
         
-        if !Connectivity.isConnectedToInternet(){
+        if !Connectivity.isConnectedToInternet() {
             
             self.noInternetSearch = true
             
-        }else{
+        } else {
             self.isLoadingSearch = true
             
-            NetworkManager(data: [:], headers: [:], url: url, service: nil, method: .get, isJSONRequest: false).executeQuery{
-                (result : Result<GamesResponse, Error>) in
+            NetworkManager(data: [:], headers: [:], url: url, service: nil, method: .get, isJSONRequest: false).executeQuery {(result: Result<GamesResponse, Error>) in
                 
                 self.isLoadingSearch = false
                 self.noInternetSearch = false
                 
-                switch result{
+                switch result {
                 
                 case .success(let response) :
                     
@@ -159,7 +155,7 @@ class GamesViewModel: ObservableObject {
         
     }
     
-    func addFavorite(context : NSManagedObjectContext){
+    func addFavorite(context: NSManagedObjectContext) {
         let game = Game(context: context)
         
         game.id = Int32(detailGames.id!)
@@ -170,10 +166,10 @@ class GamesViewModel: ObservableObject {
         game.game_description = detailGames.description
         game.addedGame = Date()
         
-        do{
+        do {
             try context.save()
             showModal = false
-        }catch{
+        } catch {
             print(error.localizedDescription)
         }
     }

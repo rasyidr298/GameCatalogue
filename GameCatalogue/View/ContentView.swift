@@ -21,11 +21,6 @@ struct ContentView: View {
                     Image(systemName: "magnifyingglass")
                     Text("Search")
                 }
-            FavoriteView()
-                .tabItem{
-                    Image(systemName: "heart.fill")
-                    Text("Favorite")
-                }
             ProfileView()
                 .tabItem{
                     Image(systemName: "person.crop.circle")

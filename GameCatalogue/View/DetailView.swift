@@ -49,19 +49,7 @@ struct ContentDetailView : View {
                     .aspectRatio(contentMode: .fit)
                     .transition(.fade(duration: 0.5))
                 
-                HStack{
-                    Text("")
-                    Spacer()
-                    Button(action: {
-                        gameViewModel.addFavorite(context: context)
-                    }, label: {
-                        Image(systemName: "plus.circle.fill")
-                            .resizable()
-                            .foregroundColor(Color.green)
-                            .frame(width: 30, height: 30)
-                            .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 20))
-                    })
-                }
+                HStack{}
                 .frame(width: UIScreen.main.bounds.width, height: 50, alignment: .center)
                 .background(colorSchema == .dark ? Color(UIColor.systemBackground) : Color.white)
                 .clipShape(CustomShape(corner: [.topLeft, .topRight], radius: 20))

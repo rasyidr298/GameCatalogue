@@ -9,13 +9,11 @@ import SwiftUI
 
 @main
 struct GameCatalogueApp: App {
-    let persistenceController = PersistenceController.shared
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(GamesViewModel())
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }

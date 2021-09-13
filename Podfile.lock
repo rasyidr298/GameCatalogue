@@ -1,0 +1,34 @@
+PODS:
+  - Alamofire (5.4.3)
+  - lottie-ios (3.2.3)
+  - SDWebImage (5.11.1):
+    - SDWebImage/Core (= 5.11.1)
+  - SDWebImage/Core (5.11.1)
+  - SDWebImageSwiftUI (2.0.2):
+    - SDWebImage (~> 5.10)
+  - SwiftLint (0.44.0)
+
+DEPENDENCIES:
+  - Alamofire (~> 5.4)
+  - lottie-ios
+  - SDWebImageSwiftUI
+  - SwiftLint
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - lottie-ios
+    - SDWebImage
+    - SDWebImageSwiftUI
+    - SwiftLint
+
+SPEC CHECKSUMS:
+  Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
+  lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
+  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  SDWebImageSwiftUI: 8a3923c95108312b03a599ec1498754af55a6819
+  SwiftLint: e96c0a8c770c7ebbc4d36c55baf9096bb65c4584
+
+PODFILE CHECKSUM: 49f315e000e346c9ab6dadbbc739affaad0e15df
+
+COCOAPODS: 1.10.2

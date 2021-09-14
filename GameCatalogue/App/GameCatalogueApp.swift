@@ -16,6 +16,7 @@ struct GameCatalogueApp: App {
             ContentView()
                 .environmentObject(GamesViewModel())
                 .environmentObject(FavoriteViewModel())
+                .environmentObject(ProfileViewModel())
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }

@@ -8,33 +8,49 @@
 import SwiftUI
 
 struct ProfileView: View {
+    
+    @EnvironmentObject var profileViewModel: ProfileViewModel
+    
     var body: some View {
         NavigationView {
-          VStack {
-            HStack {
-              Image("img_profile")
-                .resizable()
-                .clipShape(Circle())
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 100, height: 100, alignment: .center)
-            }
-            Form {
-              Section(header:
-                        Text("Biodata")
-                        .font(.body)
-                        .fontWeight(.bold)) {
-                Text("Rasyid Ridla")
-                Text("Rasyidridla298@gmail.com")
-                HStack {
-                  Text("+62")
-                  Text("87715441292")
+            VStack {
+                ZStack(alignment: Alignment(horizontal: .trailing, vertical: .bottom), content: {
+                    HStack{
+                        Spacer()
+                        Image("img_profile")
+                            .resizable()
+                            .clipShape(Circle())
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 100, height: 100, alignment: .center)
+                        Spacer()
+                    }.padding(.init(top: 0, leading: 0, bottom: 40, trailing: 0))
+                    
+                    Button(action: {
+                        profileViewModel.showModal = true
+                    }, label: {
+                        Image(systemName: "pencil.circle.fill").resizable().frame(width: 35, height: 35).foregroundColor(.green).padding(.trailing, 40)
+                    })
+                }).sheet(isPresented: $profileViewModel.showModal, content: {
+                    EditProfileView()
+                })
+                
+                Form {
+                    Section(header:
+                                Text("Biodata")
+                                .font(.body)
+                                .fontWeight(.bold)) {
+                        Text(profileViewModel.name)
+                        Text(profileViewModel.email)
+                        Text(profileViewModel.city)
+                        Text("linkedin.com/in/rasyidr298/")
+                        Text("github.com/rasyidr298")
+                    }
                 }
-                Text("linkedin.com/in/rasyidr298/")
-                Text("github.com/rasyidr298")
-              }
+                .navigationBarTitle("Account")
             }
-            .navigationBarTitle("Account")
-          }
+            .onAppear {
+                profileViewModel.fetchProfile()
+            }
         }
     }
 }

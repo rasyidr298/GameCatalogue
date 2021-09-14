@@ -52,8 +52,9 @@ struct ContentDetailView: View {
                     Text("")
                     Spacer()
                     Button(action: {
-                        if favoriteViewModel.showModalFavorite{favoriteViewModel.deleteFavorite(context: context, idGame: gameViewModel.itemClickId)
-                        favoriteViewModel.showModalFavorite = false
+                        if favoriteViewModel.showModalFavorite{
+                            favoriteViewModel.deleteFavorite(context: context, idGame: gameViewModel.itemClickId)
+                            favoriteViewModel.showModalFavorite = false
                         }else{
                             favoriteViewModel.addFavorite(context: context, gameViewModel.detailGames)
                             gameViewModel.showModalGames = false

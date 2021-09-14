@@ -15,6 +15,7 @@ struct GameCatalogueApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(GamesViewModel())
+                .environmentObject(FavoriteViewModel())
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }

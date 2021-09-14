@@ -42,7 +42,7 @@ class GamesViewModel: ObservableObject {
         }
     }
     
-    @Published var showModal: Bool = false {
+    @Published var showModalGames: Bool = false {
         didSet {
             objectWillChange.send()
         }
@@ -61,9 +61,6 @@ class GamesViewModel: ObservableObject {
             
             NetworkManager(data: [:], headers: [:], url: url, service: nil, method: .get, isJSONRequest: false).executeQuery {(result: Result<GamesResponse, Error>) in
                 
-                self.isLoading = false
-                self.noInternet = false
-                
                 switch result {
                 
                 case.success(let response) :
@@ -78,6 +75,9 @@ class GamesViewModel: ObservableObject {
                     
                     print("error get games : \(error)")
                 }
+                
+                self.isLoading = false
+                self.noInternet = false
             }
         }
     }
@@ -87,15 +87,12 @@ class GamesViewModel: ObservableObject {
         
         if !Connectivity.isConnectedToInternet() {
             
-            self.noInternet = false
+            self.noInternet = true
             
         } else {
             self.isLoading = true
             
             NetworkManager(data: [:], headers: [:], url: url, service: nil, method: .get, isJSONRequest: false).executeQuery {(result: Result<DetailGameResponse, Error>) in
-                
-                self.isLoading = false
-                self.noInternet = false
                 
                 switch result {
                 
@@ -112,6 +109,9 @@ class GamesViewModel: ObservableObject {
                     print("error detail game : \(error)")
                     
                 }
+                
+                self.isLoading = false
+                self.noInternet = false
             }
         }
     }
@@ -131,9 +131,6 @@ class GamesViewModel: ObservableObject {
             
             NetworkManager(data: [:], headers: [:], url: url, service: nil, method: .get, isJSONRequest: false).executeQuery {(result: Result<GamesResponse, Error>) in
                 
-                self.isLoadingSearch = false
-                self.noInternetSearch = false
-                
                 switch result {
                 
                 case .success(let response) :
@@ -150,27 +147,11 @@ class GamesViewModel: ObservableObject {
                     
                 }
                 
+                self.isLoadingSearch = false
+                self.noInternetSearch = false
+                
             }
         }
         
-    }
-    
-    func addFavorite(context: NSManagedObjectContext) {
-        let game = Game(context: context)
-        
-        game.id = Int32(detailGames.id!)
-        game.name = detailGames.name
-        game.backgroundImage = detailGames.backgroundImage
-        game.released = detailGames.released
-        game.rating = Int16(detailGames.rating!)
-        game.game_description = detailGames.description
-        game.addedGame = Date()
-        
-        do {
-            try context.save()
-            showModal = false
-        } catch {
-            print(error.localizedDescription)
-        }
     }
 }

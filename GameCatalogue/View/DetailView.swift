@@ -9,13 +9,12 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct DetailView: View {
-
+    
     @EnvironmentObject var gameViewModel: GamesViewModel
-
+    
     var body: some View {
-
+        
         ZStack {
-
             if gameViewModel.noInternet {
                 AnyView(ReconectView(message: "No Internet Connection..", action: {
                     gameViewModel.detailGames(idGames: gameViewModel.itemClickId)
@@ -25,7 +24,6 @@ struct DetailView: View {
             } else {
                 ContentDetailView()
             }
-
         }
         .onAppear {
             gameViewModel.detailGames(idGames: gameViewModel.itemClickId)
@@ -34,28 +32,34 @@ struct DetailView: View {
 }
 
 struct ContentDetailView: View {
-
+    
     @EnvironmentObject var gameViewModel: GamesViewModel
+    @EnvironmentObject var favoriteViewModel: FavoriteViewModel
     @Environment(\.managedObjectContext) var context
     @Environment(\.colorScheme) var colorSchema
-
+    
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 0, content: {
-
+                
                 WebImage(url: URL(string: "\(gameViewModel.detailGames.backgroundImage ?? "")"))
                     .resizable()
                     .placeholder {Rectangle().foregroundColor(Color("gray"))}
                     .aspectRatio(contentMode: .fit)
                     .transition(.fade(duration: 0.5))
-
+                
                 HStack {
                     Text("")
                     Spacer()
                     Button(action: {
-                        gameViewModel.addFavorite(context: context)
+                        if favoriteViewModel.showModalFavorite{favoriteViewModel.deleteFavorite(context: context, idGame: gameViewModel.itemClickId)
+                        favoriteViewModel.showModalFavorite = false
+                        }else{
+                            favoriteViewModel.addFavorite(context: context, gameViewModel.detailGames)
+                            gameViewModel.showModalGames = false
+                        }
                     }, label: {
-                        Image(systemName: "plus.circle.fill")
+                        Image(systemName: gameViewModel.showModalGames ? "plus.circle.fill" : "trash.circle.fill")
                             .resizable()
                             .foregroundColor(Color.green)
                             .frame(width: 30, height: 30)
@@ -66,22 +70,22 @@ struct ContentDetailView: View {
                 .background(colorSchema == .dark ? Color(UIColor.systemBackground) : Color.white)
                 .clipShape(CustomShape(corner: [.topLeft, .topRight], radius: 20))
                 .padding(EdgeInsets(top: -15, leading: 0, bottom: 0, trailing: 0))
-
+                
                 VStack(alignment: .leading) {
-
+                    
                     Text(gameViewModel.detailGames.name ?? "")
                         .font(.title).padding(.top, -25)
-
+                    
                     Text(gameViewModel.detailGames.released ?? "")
                         .font(.callout)
-
+                    
                     RatingStar(rate: Int(gameViewModel.detailGames.rating ?? 0.0), size: 20)
-
+                    
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 0) {
                             ForEach(Array(gameViewModel.detailGames.genres.enumerated()), id: \.offset) {
                                 _, genre in
-
+                                
                                 Text(genre?.name ?? "")
                                     .font(.callout)
                                     .padding(3)
@@ -92,14 +96,14 @@ struct ContentDetailView: View {
                             }
                         }
                     }.padding(.top, 10)
-
+                    
                     Text("Platform Support :").font(.title3).bold().padding(.top, 20)
-
+                    
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(alignment: .center) {
                             ForEach(Array(gameViewModel.detailGames.platforms.enumerated()), id: \.offset) {
                                 _, platform in
-
+                                
                                 Text(platform?.platform?.name ?? "")
                                     .font(.callout)
                                     .frame(width: 90, height: 80)
@@ -109,15 +113,15 @@ struct ContentDetailView: View {
                             }
                         }
                     }
-
+                    
                     Text("Description :")
                         .bold()
                         .font(.title2).padding(.top, 20)
                     Text(gameViewModel.detailGames.description?.withoutHtmlTags() ?? "").font(.body).padding(.top, 10)
-
+                    
                 }
                 .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
-
+                
             })
             Spacer()
         }
@@ -126,7 +130,6 @@ struct ContentDetailView: View {
 
 struct DetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentDetailView()
-            .environmentObject(GamesViewModel())
+        DetailView()
     }
 }

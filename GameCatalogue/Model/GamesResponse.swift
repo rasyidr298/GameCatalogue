@@ -12,13 +12,14 @@ struct GamesResponse: Codable {
 }
 
 struct Games: Codable, Identifiable {
-    var idGames = UUID()
-    var id: Int?
+    var id = UUID()
+    var idGames: Int?
     var name, released, backgroundImage : String?
     var rating: Float?
 
     enum CodingKeys: String, CodingKey {
-        case id, name, rating, released
+        case name, rating, released
+        case idGames = "id"
         case backgroundImage = "background_image"
     }
 }

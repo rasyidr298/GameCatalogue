@@ -8,14 +8,15 @@
 import Foundation
 
 struct DetailGameResponse: Codable {
-    var id: Int?
+    var idGames: Int?
     var name, description, released, backgroundImage: String?
     var rating: Float?
     var platforms: [Platforms?]
     var genres: [Genre?]
     
     enum CodingKeys : String, CodingKey{
-        case id, name, description, released, rating, platforms, genres
+        case name, description, released, rating, platforms, genres
+        case idGames = "id"
         case backgroundImage = "background_image"
     }
 }

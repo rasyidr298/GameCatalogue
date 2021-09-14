@@ -41,6 +41,7 @@ struct HomeView: View {
 struct ContentHomeView: View {
 
     @EnvironmentObject var gameViewModel: GamesViewModel
+    @EnvironmentObject var favoriteViewModel: FavoriteViewModel
     @Namespace var topID
     @Namespace var bottomID
 
@@ -69,12 +70,14 @@ struct ContentHomeView: View {
                 }
 
             }).padding(.bottom, 40)
-        }
+        }.sheet(isPresented: $gameViewModel.showModalGames, content: {
+            DetailView().environmentObject(gameViewModel).environmentObject(favoriteViewModel)
+        })
     }
 }
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView().environmentObject(GamesViewModel())
+        HomeView()
     }
 }

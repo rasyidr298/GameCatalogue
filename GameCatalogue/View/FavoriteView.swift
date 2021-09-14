@@ -10,29 +10,33 @@ import SDWebImageSwiftUI
 
 struct FavoriteView: View {
 
+    @EnvironmentObject var favoriteViewModel: FavoriteViewModel
     @EnvironmentObject var gameViewModel: GamesViewModel
     @Environment(\.managedObjectContext) var context
-    @FetchRequest(entity: Game.entity(), sortDescriptors: [NSSortDescriptor(key: "addedGame", ascending: false)], animation: .spring()) var result: FetchedResults<Game>
 
     var body: some View {
         NavigationView {
             VStack {
+                Text("").onAppear{
+                    favoriteViewModel.getAllFavorite(context: context)
+                }
                 ScrollView(.vertical) {
-                    ForEach(Array(result.enumerated()), id: \.offset) {_, games in
+                    
+                    ForEach(Array(favoriteViewModel.favorite.results.enumerated()), id: \.offset) {_, games in
 
-                        FavoriteItemView(games: games)
-                            .contextMenu {
-
+                        FavoriteItemView(games: games!)
+                            .contextMenu{
                                 Button(action: {
-                                    context.delete(games)
-                                    try! context.save()
+                                    favoriteViewModel.deleteFavorite(context: context, idGame: (games?.idGames)!)
                                 }, label: {
                                     Text("Delete")
                                 })
-
                             }
+                        
                     }
-                }
+                }.sheet(isPresented: $favoriteViewModel.showModalFavorite, content: {
+                    DetailView().environmentObject(gameViewModel).environmentObject(favoriteViewModel)
+                })
             }.navigationTitle("Favorite")
         }
     }

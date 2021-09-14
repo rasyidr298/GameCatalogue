@@ -34,7 +34,6 @@ struct SearchView: View {
 struct ContentSearchView: View {
 
     @EnvironmentObject var gameViewModel: GamesViewModel
-    @State var showModal = false
     @Binding var searchText: String
     @State var inputSearch: String = ""
     @State var disableTextField: Bool = false

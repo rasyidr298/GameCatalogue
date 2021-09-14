@@ -9,7 +9,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct ContentItemView: View {
-
+    
     @EnvironmentObject var gameViewModel: GamesViewModel
     var games: Games
 
@@ -45,21 +45,18 @@ struct ContentItemView: View {
         .cornerRadius(10)
         .padding(EdgeInsets(top: 0, leading: 10, bottom: 20, trailing: 10))
         .onTapGesture {
-            gameViewModel.showModal.toggle()
-            gameViewModel.itemClickId = games.id!
-
-        }.sheet(isPresented: $gameViewModel.showModal, content: {
-            DetailView()
-                .environmentObject(gameViewModel)
-        })
+            gameViewModel.itemClickId = games.idGames!
+            self.gameViewModel.showModalGames = true
+        }
 
     }
 }
 
 struct FavoriteItemView: View {
-
+    
     @EnvironmentObject var gameViewModel: GamesViewModel
-    var games: Game
+    @EnvironmentObject var favoriteViewModel: FavoriteViewModel
+    var games: Games
 
     var body: some View {
 
@@ -86,12 +83,16 @@ struct FavoriteItemView: View {
 
             }
 
-            RatingStar(rate: Int(games.rating), size: 15).padding(.bottom, 0)
+            RatingStar(rate: Int(games.rating!), size: 15).padding(.bottom, 0)
             .padding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 20))
 
         }
         .cornerRadius(10)
         .padding(EdgeInsets(top: 0, leading: 10, bottom: 20, trailing: 10))
+        .onTapGesture {
+            gameViewModel.itemClickId = games.idGames!
+            favoriteViewModel.showModalFavorite = true
+        }
 
     }
 }

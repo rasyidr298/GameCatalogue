@@ -14,10 +14,10 @@ struct GameCatalogueApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(ProfileViewModel())
                 .environmentObject(GamesViewModel())
                 .environmentObject(FavoriteViewModel())
-                .environmentObject(ProfileViewModel())
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }

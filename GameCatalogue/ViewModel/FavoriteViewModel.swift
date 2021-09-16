@@ -25,6 +25,17 @@ class FavoriteViewModel: ObservableObject {
         }
     }
     
+    @Published var isFav: Bool = false {
+        didSet {
+            objectWillChange.send()
+        }
+    }
+    
+    func checkIdLocal(idGames: Int) {
+        print("checkId : \(idGames)")
+        isFav = favorite.results.contains(where: {$0?.idGames == idGames })
+    }
+    
     func addFavorite(context: NSManagedObjectContext,_ input: DetailGameResponse) {
         context.performAndWait {
             if let entity = NSEntityDescription.entity(forEntityName: "Game", in: context) {

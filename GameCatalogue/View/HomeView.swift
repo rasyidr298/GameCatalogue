@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct HomeView: View {
-
+    
+    @EnvironmentObject var favoriteViewModel: FavoriteViewModel
     @EnvironmentObject var gameViewModel: GamesViewModel
+    @Environment(\.managedObjectContext) var context
 
     var body: some View {
         NavigationView {
@@ -31,6 +33,7 @@ struct HomeView: View {
 
         }
         .onAppear {
+            favoriteViewModel.getAllFavorite(context: context)
             if gameViewModel.games.results.isEmpty {
                 gameViewModel.getGames()
             }

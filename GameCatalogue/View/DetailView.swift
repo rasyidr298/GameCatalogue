@@ -11,6 +11,7 @@ import SDWebImageSwiftUI
 struct DetailView: View {
     
     @EnvironmentObject var gameViewModel: GamesViewModel
+    @EnvironmentObject var favoriteViewModel: FavoriteViewModel
     
     var body: some View {
         
@@ -26,6 +27,7 @@ struct DetailView: View {
             }
         }
         .onAppear {
+            favoriteViewModel.checkIdLocal(idGames: gameViewModel.itemClickId)
             gameViewModel.detailGames(idGames: gameViewModel.itemClickId)
         }
     }
@@ -52,21 +54,20 @@ struct ContentDetailView: View {
                     Text("")
                     Spacer()
                     Button(action: {
-                        if favoriteViewModel.showModalFavorite{
+                        if favoriteViewModel.isFav{
                             favoriteViewModel.deleteFavorite(context: context, idGame: gameViewModel.itemClickId)
-                            favoriteViewModel.showModalFavorite = false
+                            favoriteViewModel.isFav = false
                         }else{
                             favoriteViewModel.addFavorite(context: context, gameViewModel.detailGames)
-                            gameViewModel.showModalGames = false
+                            favoriteViewModel.isFav = true
                         }
                     }, label: {
-                        Image(systemName: gameViewModel.showModalGames ? "plus.circle.fill" : "trash.circle.fill")
-                            .resizable()
-                            .foregroundColor(Color.green)
-                            .frame(width: 30, height: 30)
-                            .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 20))
+                        Image(systemName: favoriteViewModel.isFav ? "heart.fill" : "heart")
+                            .resizable().frame(width: 30, height: 30)
                     })
+                    .foregroundColor(Color.red).padding(EdgeInsets(top: 20, leading: 0, bottom: 0, trailing: 20))
                 }
+                
                 .frame(width: UIScreen.main.bounds.width, height: 50, alignment: .center)
                 .background(colorSchema == .dark ? Color(UIColor.systemBackground) : Color.white)
                 .clipShape(CustomShape(corner: [.topLeft, .topRight], radius: 20))

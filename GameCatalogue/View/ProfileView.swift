@@ -15,7 +15,7 @@ struct ProfileView: View {
         NavigationView {
             VStack {
                 ZStack(alignment: Alignment(horizontal: .trailing, vertical: .bottom), content: {
-                    HStack{
+                    HStack {
                         Spacer()
                         Image("img_profile")
                             .resizable()

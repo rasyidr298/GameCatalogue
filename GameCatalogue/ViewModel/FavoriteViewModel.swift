@@ -78,7 +78,7 @@ class FavoriteViewModel: ObservableObject {
                     games.append(game)
                 }
                 self.favorite.results.removeAll()
-                DispatchQueue.main.async{
+                DispatchQueue.main.async {
                     self.favorite.results.append(contentsOf: games)
                 }
             } catch let error as NSError {

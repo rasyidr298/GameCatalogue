@@ -17,7 +17,7 @@ struct FavoriteView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text("").onAppear{
+                Text("").onAppear {
                     favoriteViewModel.getAllFavorite(context: context)
                 }
                 ScrollView(.vertical) {
@@ -25,7 +25,7 @@ struct FavoriteView: View {
                     ForEach(Array(favoriteViewModel.favorite.results.enumerated()), id: \.offset) {_, games in
 
                         FavoriteItemView(games: games!)
-                            .contextMenu{
+                            .contextMenu {
                                 Button(action: {
                                     favoriteViewModel.deleteFavorite(context: context, idGame: (games?.idGames)!)
                                 }, label: {

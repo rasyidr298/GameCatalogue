@@ -16,8 +16,8 @@ struct EditProfileView: View {
     @State var city = ""
     
     var body: some View {
-        VStack(alignment: .center){
-            VStack(alignment: .leading){
+        VStack(alignment: .center) {
+            VStack(alignment: .leading) {
                 Text("Name")
                 TextField("name", text: $name)
                     .padding()

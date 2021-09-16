@@ -70,8 +70,7 @@ struct ContentSearchView: View {
                     disableTextField = true
                 }
 
-                ForEach(Array(gameViewModel.searchGame.results.enumerated()), id: \.offset) {
-                    _, games in
+                ForEach(Array(gameViewModel.searchGame.results.enumerated()), id: \.offset) {_, games in
 
                     ContentItemView(games: games!)
                 }

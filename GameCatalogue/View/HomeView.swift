@@ -51,8 +51,7 @@ struct ContentHomeView: View {
     var body: some View {
         ScrollView(.vertical) {
 
-            ForEach(Array(gameViewModel.games.results.enumerated()), id: \.offset) {
-                _, games in
+            ForEach(Array(gameViewModel.games.results.enumerated()), id: \.offset) {_, games in
 
                 ContentItemView(games: games!)
             }

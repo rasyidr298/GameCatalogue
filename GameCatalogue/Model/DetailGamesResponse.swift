@@ -14,7 +14,7 @@ struct DetailGameResponse: Codable {
     var platforms: [Platforms?]
     var genres: [Genre?]
     
-    enum CodingKeys : String, CodingKey{
+    enum CodingKeys : String, CodingKey {
         case name, description, released, rating, platforms, genres
         case idGames = "id"
         case backgroundImage = "background_image"

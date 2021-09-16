@@ -54,10 +54,10 @@ struct ContentDetailView: View {
                     Text("")
                     Spacer()
                     Button(action: {
-                        if favoriteViewModel.isFav{
+                        if favoriteViewModel.isFav {
                             favoriteViewModel.deleteFavorite(context: context, idGame: gameViewModel.itemClickId)
                             favoriteViewModel.isFav = false
-                        }else{
+                        } else {
                             favoriteViewModel.addFavorite(context: context, gameViewModel.detailGames)
                             favoriteViewModel.isFav = true
                         }
@@ -85,8 +85,7 @@ struct ContentDetailView: View {
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 0) {
-                            ForEach(Array(gameViewModel.detailGames.genres.enumerated()), id: \.offset) {
-                                _, genre in
+                            ForEach(Array(gameViewModel.detailGames.genres.enumerated()), id: \.offset) {_, genre in
                                 
                                 Text(genre?.name ?? "")
                                     .font(.callout)
@@ -103,8 +102,7 @@ struct ContentDetailView: View {
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(alignment: .center) {
-                            ForEach(Array(gameViewModel.detailGames.platforms.enumerated()), id: \.offset) {
-                                _, platform in
+                            ForEach(Array(gameViewModel.detailGames.platforms.enumerated()), id: \.offset) {_, platform in
                                 
                                 Text(platform?.platform?.name ?? "")
                                     .font(.callout)

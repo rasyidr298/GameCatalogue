@@ -7,13 +7,13 @@
 
 import Foundation
 
-class ProfileViewModel: ObservableObject{
+class ProfileViewModel: ObservableObject {
     @Published var showModal = false
     @Published var name = ""
     @Published var email = ""
     @Published var city = ""
     
-    func fetchProfile(){
+    func fetchProfile() {
         Profile.synchronize()
         DispatchQueue.main.async {
             self.name = Profile.name

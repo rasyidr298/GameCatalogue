@@ -7,34 +7,34 @@
 
 import Foundation
 
-struct Profile{
+struct Profile {
     static let nameKey = "keyName"
     static let emailKey = "keyEmail"
     static let cityKey = "keyCity"
     
-    static var name: String{
-        get{
+    static var name: String {
+        get {
             return UserDefaults.standard.string(forKey: nameKey) ?? "Rasyid Ridla"
         }
-        set{
+        set {
             UserDefaults.standard.set(newValue, forKey: nameKey)
         }
     }
     
-    static var email: String{
-        get{
+    static var email: String {
+        get {
             return UserDefaults.standard.string(forKey: emailKey) ?? "RasyidRidla298@gmail.com"
         }
-        set{
+        set {
             UserDefaults.standard.set(newValue, forKey: emailKey)
         }
     }
     
-    static var city: String{
-        get{
+    static var city: String {
+        get {
             return UserDefaults.standard.string(forKey: cityKey) ?? "Yogyakarta"
         }
-        set{
+        set {
             UserDefaults.standard.set(newValue, forKey: cityKey)
         }
     }
